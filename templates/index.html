@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife | Diet & Fitness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">Fit<span>Life.</span></div>
+        <p>Your personal health companion</p>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div>
+                <p class="eyebrow">YOUR JOURNEY STARTS HERE</p>
+                <h1>Build a healthier<br>you, every day.</h1>
+                <p class="hero-text">Personalized food, fitness and progress tracking in one place.</p>
+            </div>
+            <div class="hero-icon">💪</div>
+        </section>
+
+        <div id="message" class="message"></div>
+
+        <section class="card">
+            <h2>👤 Your Fitness Profile</h2>
+            <p class="muted">Enter your details to receive personalized suggestions.</p>
+
+            <form id="profileForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="name">Your name</label>
+                        <input id="name" name="name" required placeholder="Enter your name">
+                    </div>
+                    <div class="field">
+                        <label for="age">Age</label>
+                        <input id="age" name="age" type="number" min="13" max="100" required placeholder="Age">
+                    </div>
+                    <div class="field">
+                        <label for="sex">Sex (for calorie estimate)</label>
+                        <select id="sex" name="sex" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="height">Height (cm)</label>
+                        <input id="height" name="height" type="number" min="100" max="250" required placeholder="e.g. 170">
+                    </div>
+                    <div class="field">
+                        <label for="weight">Weight (kg)</label>
+                        <input id="weight" name="weight" type="number" min="25" max="350" step="0.1" required placeholder="e.g. 65">
+                    </div>
+                    <div class="field">
+                        <label for="goal">Your goal</label>
+                        <select id="goal" name="goal">
+                            <option value="lose">Lose weight</option>
+                            <option value="maintain" selected>Maintain weight</option>
+                            <option value="gain">Gain weight</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="activity">Activity level</label>
+                        <select id="activity" name="activity">
+                            <option value="low">Low activity</option>
+                            <option value="moderate" selected>Moderately active</option>
+                            <option value="high">Very active</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="diet">Diet preference</label>
+                        <select id="diet" name="diet">
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="non-vegetarian">Non-vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="primary-btn">Generate My Plan →</button>
+            </form>
+        </section>
+
+        <section id="recommendations" class="hidden">
+            <h2 class="section-title">✨ Your Personalized Plan</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span>Daily calorie estimate</span>
+                    <strong id="caloriesTarget">—</strong>
+                    <small>kcal/day</small>
+                </div>
+                <div class="stat-card">
+                    <span>Daily water guide</span>
+                    <strong id="waterTarget">—</strong>
+                    <small>litres/day</small>
+                </div>
+                <div class="stat-card">
+                    <span>BMI estimate</span>
+                    <strong id="bmiTarget">—</strong>
+                    <small>screening measure</small>
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="card">
+                    <h2>🥗 Suggested Meals</h2>
+                    <ul id="mealList" class="recommendation-list"></ul>
+                </div>
+                <div class="card">
+                    <h2>🏃 Workout Ideas</h2>
+                    <ul id="workoutList" class="recommendation-list"></ul>
+                </div>
+            </div>
+            <p class="disclaimer">These are general estimates, not medical advice. Individual needs vary.</p>
+        </section>
+
+        <section id="tracker" class="card hidden">
+            <h2>📊 Daily Progress Tracker</h2>
+            <p class="muted">Add your food, exercise and water records for today.</p>
+
+            <form id="logForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="food">Food / meal</label>
+                        <input id="food" name="food" placeholder="e.g. Breakfast">
+                    </div>
+                    <div class="field">
+                        <label for="logCalories">Food calories (kcal)</label>
+                        <input id="logCalories" name="calories" type="number" min="0" max="10000" value="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="workout">Workout</label>
+                        <input id="workout" name="workout" placeholder="e.g. Walking">
+                    </div>
+                    <div class="field">
+                        <label for="minutes">Workout minutes</label>
+                        <input id="minutes" name="workout_minutes" type="number" min="0" max="1440" value="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="water">Water (litres)</label>
+                        <input id="water" name="water" type="number" min="0" max="20" step="0.1" value="0" required>
+                    </div>
+                    <div class="field">
+                        <label for="logWeight">Weight today (kg, optional)</label>
+                        <input id="logWeight" name="weight" type="number" min="0" max="350" step="0.1" value="0">
+                    </div>
+                </div>
+                <button type="submit" class="primary-btn">Save Today's Progress</button>
+            </form>
+
+            <div class="stats-grid progress-stats">
+                <div class="stat-card"><span>Calories consumed</span><strong id="totalCalories">0</strong><small>kcal today</small></div>
+                <div class="stat-card"><span>Exercise</span><strong id="totalMinutes">0</strong><small>minutes today</small></div>
+                <div class="stat-card"><span>Water logged</span><strong id="totalWater">0</strong><small>litres today</small></div>
+            </div>
+
+            <h3>Today's Records</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Food</th><th>Calories</th><th>Workout</th><th>Minutes</th><th>Water</th></tr>
+                    </thead>
+                    <tbody id="logsTable">
+                        <tr><td colspan="5">No records yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Last 7 Days — Calories</h3>
+            <div id="weeklyChart" class="chart"></div>
+        </section>
+
+        <footer>
+            <p>FitLife © 2026 · Small steps, healthier habits.</p>
+        </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
